@@ -39,10 +39,16 @@ function parseArgs(args) {
 }
 
 async function onParsedArgs(args, parsed_args) {
-  if (parsed_args) {
-    await (
-      await fetch(server, { body: JSON.stringify(parsed_args), method: "POST" })
-    ).json();
+  try {
+    if (parsed_args) {
+      await (
+        await fetch(server, {
+          body: JSON.stringify(parsed_args),
+          method: "POST",
+        })
+      ).json();
+    }
+  } finally {
   }
   const p = Deno.run({ cmd: [cc_unwrapped, ...args] });
   const ec = await p.status();
