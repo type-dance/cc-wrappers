@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run --allow-env --allow-net --allow-read --allow-run
 
-import * as path from "https://deno.land/std@0.167.0/path/mod.ts";
+import * as path from "https://deno.land/std@0.178.0/path/mod.ts";
 
 const server = Deno.env.get("CC_WRAPPERS_SERVER");
 
@@ -17,14 +17,20 @@ async function realArgs(args) {
   return rsp_content
     .split("\n")
     .filter((arg) => arg)
-    .map(JSON.parse);
+    .map((l) => (l.startsWith('"') ? JSON.parse(l) : l));
 }
 
 function parseArgs(args) {
   if (!args.includes("-c")) return null;
   const file = args.find((arg) => arg.endsWith(".c") || arg.endsWith(".cpp"));
   if (!file) return null;
-  if (args.includes("-DPROFILING") || args.includes("-DDEBUG")) return null;
+  if (
+    args.includes("-DPROFILING") ||
+    args.includes("-DDEBUG") ||
+    args.includes("-DTHREADED_RTS") ||
+    args.includes("-fPIC")
+  )
+    return null;
   return {
     directory: Deno.cwd(),
     arguments: [cc_unwrapped, ...args],

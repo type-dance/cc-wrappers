@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-net --allow-read --allow-run --allow-write --unstable
 
-import * as fs from "https://deno.land/std@0.167.0/fs/mod.ts";
-import * as path from "https://deno.land/std@0.167.0/path/mod.ts";
+import * as fs from "https://deno.land/std@0.178.0/fs/mod.ts";
+import * as path from "https://deno.land/std@0.178.0/path/mod.ts";
 
 let host_port_promise_resolve;
 const host_port_promise = new Promise((res) => {
